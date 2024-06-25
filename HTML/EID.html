@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/logo.png"/>
+    <link rel="stylesheet" href="/CSS/EID.css">
+    <title>EID</title>
+</head>
+<body>
+  <div class="container">
+    <div class="Homepage">
+        <div class="menu">
+           <div class="logo"><img src="/img/logo.png"></div>
+            <ul>
+                <li>홈페이지</li>
+                <li>물품 목록</li>
+                <li>배송 서비스</li>
+                <li>고객 지원</li>
+            </ul>
+            <div class="hg"><p>학용품 기부하러가기</p></div>
+        </div>
+        <div class="Homepage_mid">
+                <img src="/img/Text/Homepage_Text.png">
+                <img id="rocket" class="rocket" src="/img/rocket.png">
+        </div>
+    </div>
+    <div class="Schoolsupplies">
+           <div class="Text_box">
+            <div class="Tbox1">
+            <p>EID</p><p>에서 매번 바뀌는 시즌 물품들을 구매/대여 해보세요!</p>
+            </div>
+            <div class="Tbox2">
+                <p>EID에서 합리적인 가격에 구매/대여해보세요!</p>
+            </div>
+        </div>
+        <div class="Schoolsupplies_mid">    
+            <a href="/HTML/Spring.html"><img src="/img/Schoolsupplies/Spring.png"></a>
+            <a href="/HTML/Summer.html"><img src="/img/Schoolsupplies/Summer.png"></a>
+            <a href="/HTML/Fall.html"><img src="/img/Schoolsupplies/Fall.png"></a>
+            <a href="/HTML/Winter.html"><img src="/img/Schoolsupplies/Winter.png"></a>
+        </div>
+    </div>
+    <div class="delivery">
+            <div class="delivery_mid">
+                <img src="/img/Text/bdgs.png">
+              <div class="bdgss">   
+                <img src="/img/bdgs/jhw.png">
+                <img src="/img/bdgs/ljn.png">
+              </div>
+
+            </div>
+    </div>
+    <div class="Questions">
+        <img src="/img/Text/Questions_Text.png">
+        <div class="Questions_mid"> 
+            <img id="kakao" src="/img/icon/카카오톡.png">
+            <img id="email" src="/img/icon/이메일.png">
+            <img id="instagram" src="/img/icon/인스타그램.png">
+            <img id="discord" src="/img/icon/디스코드.png">
+        </div>
+    </div>
+    <div class="bar">
+        <div class="box box1"></div>
+        <div class="box box2"></div>
+        <div class="box box3"></div>
+        <div class="box box4"></div>
+    </div>
+  </div>
+ 
+  <div id="donationModal" class="modal">
+    <div class="modal-content">
+        <img id="modalImage" src="/img/QR/학용품기부.png">
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var sectionMapping = {
+            '홈페이지': '.Homepage',
+            '물품 목록': '.Schoolsupplies',
+            '배송 서비스': '.delivery',
+            '고객 지원': '.Questions'
+        };
+    
+        var menuItems = document.querySelectorAll('.menu ul li');
+        var boxes = document.querySelectorAll('.bar .box');
+    
+        menuItems.forEach(function(item) {
+            item.addEventListener('click', function(event) {
+                var targetSectionName = event.target.textContent;
+                var targetSectionSelector = sectionMapping[targetSectionName];
+                var targetSection = document.querySelector(targetSectionSelector);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    
+        function activateSection() {
+            var scrollPosition = window.scrollY;
+            var windowHeight = window.innerHeight;
+    
+            Object.keys(sectionMapping).forEach(function(sectionName, index) {
+                var section = document.querySelector(sectionMapping[sectionName]);
+                var sectionTop = section.offsetTop;
+                var sectionHeight = section.offsetHeight;
+    
+                if (scrollPosition >= sectionTop - windowHeight / 2 && scrollPosition < sectionTop + sectionHeight - windowHeight / 2) {
+                    boxes.forEach(function(box) { box.classList.remove('active'); });
+                    boxes[index].classList.add('active');
+                }
+            });
+        }
+    
+        window.addEventListener('scroll', activateSection);
+        activateSection();
+    
+        
+        var modal = document.getElementById("donationModal");
+        var modalContent = modal.querySelector(".modal-content");
+        var modalImage = document.getElementById("modalImage");
+        var btn = document.querySelector(".hg");
+    
+        btn.onclick = function() {
+            modalImage.src = "/img/QR/학용품기부.png";
+            modal.style.display = "block";
+            setTimeout(function() {
+                modal.classList.add("show");
+            }, 10);
+        }
+    
+        modal.onclick = function(event) {
+            modal.classList.remove("show");
+            setTimeout(function() {
+                modal.style.display = "none";
+            }, 300);
+        }
+        
+    
+        var icons = document.querySelectorAll('.Questions_mid img');
+        icons.forEach(function(icon) {
+            icon.addEventListener('click', function() {
+                var id = icon.id;
+                switch(id) {
+                    case 'kakao':
+                        modalImage.src = "/img/QR/kakaoQR.png"; 
+                        break;
+                    case 'email':
+                        modalImage.src = "/img/QR/emailQR.png"; 
+                        break;
+                    case 'instagram':
+                        modalImage.src = "/img/QR/instagramQR.png"; 
+                        break;
+                    case 'discord':
+                        modalImage.src = "/img/QR/discordQR.png"; 
+                        break;
+                }
+                modal.style.display = "block";
+                setTimeout(function() {
+                    modal.classList.add("show");
+                }, 10);
+            });
+        });
+    
+
+        var rocket = document.getElementById("rocket");
+        var position = 0;
+        var direction = 1;
+    
+        function animateRocket() {
+            position += direction * 0.3;
+            rocket.style.top = position + "px";
+    
+            if (position >= 20 || position <= 0) {
+                direction *= -1;
+            }
+        }
+    
+        setInterval(animateRocket, 25);
+    });
+    </script>
+ x`
+</body>
+</html>
+
+
